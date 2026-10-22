@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boda Selene e Irving</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --navy: #1F2A44;
+            --beige: #E8DCC8;
+            --gold: #C6A75E;
+            --white: #FFFFFF;
+            --light-bg: #F9F6F0;
+            --text-dark: #2A2A2A;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--light-bg);
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Cinzel', serif;
+            color: var(--navy);
+            letter-spacing: 1px;
+        }
+
+        .script-font {
+            font-family: 'Great Vibes', cursive;
+            color: var(--gold);
+        }
+
+        /* Reproductor de Música Flotante */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 12px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 1px solid var(--gold);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .music-player:hover {
+            transform: scale(1.05);
+        }
+
+        .music-player button {
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 1.2rem;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .music-info {
+            font-size: 0.75rem;
+            padding-right: 10px;
+            color: var(--beige);
+            display: none;
+        }
+
+        .music-player.active .music-info {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            background: linear-gradient(rgba(31, 42, 68, 0.65), rgba(31, 42, 68, 0.65)), 
+                        url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+            padding: 40px 20px;
+        }
+
+        .hero h3 {
+            color: var(--beige);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--beige);
+            margin: 15px 0;
+            line-height: 1.2;
+        }
+
+        .hero p.date {
+            font-size: 1.2rem;
+            color: var(--gold);
+            letter-spacing: 2px;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+        /* Cuenta Regresiva */
+        .countdown-container {
+            margin-top: 35px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .time-box {
+            background: rgba(232, 220, 200, 0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--gold);
+            padding: 12px 18px;
+            border-radius: 8px;
+            min-width: 70px;
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 1.8rem;
+            font-family: 'Cinzel', serif;
+            color: var(--white);
+            font-weight: bold;
+        }
+
+        .time-box small {
+            font-size: 0.7rem;
+            color: var(--beige);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Secciones Generales */
+        .section {
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background-color: var(--gold);
+        }
+
+        /* Padres y Padrinos */
+        .family-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .family-card {
+            background: var(--white);
+            padding: 30px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--gold);
+        }
+
+        .family-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--navy);
+        }
+
+        .family-card p {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .family-card strong {
+            color: var(--navy);
+        }
+
+        /* Eventos / Ubicaciones */
+        .event-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 35px 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 1px solid var(--beige);
+        }
+
+        .event-icon {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .event-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .btn-map {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 28px;
+            background-color: var(--navy);
+            color: var(--beige);
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gold);
+        }
+
+        .btn-map:hover {
+            background-color: var(--gold);
+            color: var(--navy);
+        }
+
+        /* Código de Vestimenta y Regalos */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .detail-box {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .detail-box i {
+            font-size: 2.2rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        /* Formulario RSVP */
+        .rsvp-form {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            text-align: left;
+            border-top: 5px solid var(--navy);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--navy);
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            border-color: var(--gold);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--navy);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--gold);
+            color: var(--navy);
+        }
+
+        /* Confirmación Generada */
+        .confirmation-card {
+            display: none;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid var(--gold);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .confirmation-card h3 {
+            color: var(--navy);
+            margin-bottom: 15px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--navy);
+            color: var(--beige);
+            padding: 30px 20px;
+            font-size: 0.85rem;
+        }
+
+        /* Responsivo */
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .countdown-container {
+                gap: 8px;
+            }
+            .time-box {
+                min-width: 55px;
+                padding: 8px 10px;
+            }
+            .time-box span {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Adaptación responsiva para Google Sites */
+        html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+        img, video, iframe { max-width: 100%; }
+        .hero { width: 100%; min-height: 100svh; padding: 50px 16px; }
+        .hero h1 { font-size: clamp(1.8rem, 5vw, 3rem); overflow-wrap: break-word; }
+        .section { width: 100%; max-width: 800px; padding: 50px 20px; }
+        .family-grid, .details-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+        .countdown-container { flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .rsvp-form { width: 100%; max-width: 100%; }
+        @media (max-width: 600px) {
+            .hero { min-height: 85svh; padding: 40px 12px; }
+            .hero h1 { font-size: 2rem; }
+            .section { padding: 40px 15px; }
+            .section-title { font-size: 1.6rem; }
+            .time-box { min-width: 55px; padding: 8px; }
+            .time-box span { font-size: 1.2rem; }
+            .event-card, .family-card, .detail-box { padding: 25px 15px; }
+            .rsvp-form { padding: 25px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Audio de Fondo -->
+    <audio id="bgMusic" loop>
+        <source src="https://ia800903.us.archive.org/27/items/carla-morrison-te-regalo/Carla%20Morrison%20-%20Te%20Regalo.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Control de Música Flotante -->
+    <div class="music-player" id="musicPlayer" onclick="toggleMusic()">
+        <button id="musicBtn"><i class="fas fa-music"></i></button>
+        <div class="music-info" id="musicInfo">
+            <span>Carla Morrison - Te regalo</span>
+        </div>
+    </div>
+
+    <!-- Hero / Portada -->
+    <section class="hero">
+        <p class="script-font" style="font-size: 2.5rem; color: var(--gold);">Nuestra Boda</p>
+        <h1>Selene Ortiz<br>&<br>Irving Amaro</h1>
+        <p class="date">19 DE DICIEMBRE DE 2026</p>
+
+        <!-- Cuenta Regresiva -->
+        <div class="countdown-container">
+            <div class="time-box">
+                <span id="days">00</span>
+                <small>Días</small>
+            </div>
+            <div class="time-box">
+                <span id="hours">00</span>
+                <small>Horas</small>
+            </div>
+            <div class="time-box">
+                <span id="minutes">00</span>
+                <small>Min</small>
+            </div>
+            <div class="time-box">
+                <span id="seconds">00</span>
+                <small>Seg</small>
+            </div>
+        </div>
+    </section>
+
+    <!-- Frase / Mensaje -->
+    <section class="section">
+        <p class="script-font" style="font-size: 2.2rem; margin-bottom: 10px;">"Te regalo mis piernas, mi cuerpo, mis besos, mi amor verdadero..."</p>
+        <p style="color: #666; font-style: italic;">Con la bendición de Dios y nuestros padres, uniremos nuestras vidas para siempre.</p>
+    </section>
+
+    <!-- Padres y Padrinos -->
+    <section class="section" style="background: rgba(232, 220, 200, 0.3); max-width: 100%;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 class="section-title">Nuestros Padres</h2>
+            <div class="family-grid">
+                <div class="family-card">
+                    <h3>Padres de la Novia</h3>
+                    <p>Dalia Noemi Ezquivel Gongora</p>
+                    <p>Jorge Ortiz Zaragoza <small style="color: #888;">(Finado)</small></p>
+                </div>
+                <div class="family-card">
+                    <h3>Padres del Novio</h3>
+                    <p>Maria Eugenia Olvera García</p>
+                    <p>Margarito Amaro Guzman</p>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="margin-top: 50px;">Nuestros Padrinos</h2>
+            <div class="family-grid">
+                <div class="family-card">
+                    <p><strong>Velación:</strong><br>Roberto Amaro Guzman y Maria Luisa Marcelo Guerrero</p>
+                </div>
+                <div class="family-card">
+                    <p><strong>Anillos:</strong><br>Juan Pasarán Gutiérrez y Leticia Jaramillo</p>
+                </div>
+                <div class="family-card">
+                    <p><strong>Lazo:</strong><br>Maria Lidia Mosqueda Mata y Sergio Ortiz Zaragoza</p>
+                </div>
+                <div class="family-card">
+                    <p><strong>Arras:</strong><br>Sara Ortiz y Sergio Ortiz Mosqueda</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cuándo y Dónde -->
+    <section class="section">
+        <h2 class="section-title">¿Dónde y Cuándo?</h2>
+        
+        <!-- Ceremonia -->
+        <div class="event-card">
+            <i class="fas fa-church event-icon"></i>
+            <h3>Ceremonia Religiosa</h3>
+            <p><strong>Hora:</strong> 6:00 PM</p>
+            <p><strong>Lugar:</strong> Parroquia de Todos los Santos</p>
+            <p style="color: #666; font-size: 0.9rem;">Jardines de Morelos, Ecatepec de Morelos</p>
+            <a href="https://maps.app.goo.gl/xGpHuWtUyhQQFvzc8" target="_blank" class="btn-map">
+                <i class="fas fa-map-marker-alt"></i> Ver en Google Maps
+            </a>
+        </div>
+
+        <!-- Fiesta -->
+        <div class="event-card">
+            <i class="fas fa-glass-cheers event-icon"></i>
+            <h3>Recepción / Fiesta</h3>
+            <p><strong>Hora:</strong> 7:30 PM <small style="color: var(--gold); font-weight: bold;">(Ser puntuales)</small></p>
+            <p><strong>Lugar:</strong> Salón Paz</p>
+            <p style="color: #666; font-size: 0.9rem;">Av. Nicolas Bravo #509, Jardines de Morelos</p>
+            <a href="https://maps.app.goo.gl/Ds4GAkD3Y86hsgTm8?g_st=ac" target="_blank" class="btn-map">
+                <i class="fas fa-map-marker-alt"></i> Ver en Google Maps
+            </a>
+        </div>
+    </section>
+
+    <!-- Detalles -->
+    <section class="section" style="background: rgba(232, 220, 200, 0.3); max-width: 100%;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 class="section-title">Detalles Importantes</h2>
+            <div class="details-grid">
+                <div class="detail-box">
+                    <i class="fas fa-user-tie"></i>
+                    <h3>Código de Vestimenta</h3>
+                    <p><strong>Formal</strong></p>
+                    <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Traje oscuro o vestido formal para la ocasión.</p>
+                </div>
+                <div class="detail-box">
+                    <i class="fas fa-envelope-open-text"></i>
+                    <h3>Mesa de Regalos</h3>
+                    <p><strong>Lluvia de Sobres</strong></p>
+                    <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Tu presencia es nuestro mejor regalo, pero si deseas hacernos un obsequio, colocaremos un buzón para sobres el día del evento.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RSVP / Confirmación de Asistencia -->
+    <section class="section">
+        <h2 class="section-title">Confirmación de Asistencia</h2>
+        <p style="margin-bottom: 25px; color: #666;">Por favor, confirma tu asistencia antes del 1 de Noviembre de 2026.</p>
+
+        <form class="rsvp-form" id="rsvpForm" onsubmit="submitForm(event)">
+            <div class="form-group">
+                <label for="guestName">Nombre Completo:</label>
+                <input type="text" id="guestName" placeholder="Escribe tu nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label for="attendance">¿Asistirás a nuestra boda?</label>
+                <select id="attendance" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="Sí, asistiré con mucho gusto">¡Sí, ahí estaré!</option>
+                    <option value="Lo siento, no podré asistir">Lamentablemente no podré asistir</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="passes">Número de pases a confirmar:</label>
+                <select id="passes" required>
+                    <option value="1 pase">1 Pase</option>
+                    <option value="2 pases">2 Pases</option>
+                    <option value="3 pases">3 Pases</option>
+                    <option value="4 pases">4 Pases</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Mensaje para los novios (Opcional):</label>
+                <textarea id="message" rows="3" placeholder="Escribe un lindo deseo..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">Confirmar Mi Asistencia</button>
+        </form>
+
+        <!-- Tarjeta de Confirmación -->
+        <div class="confirmation-card" id="confirmationCard">
+            <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--gold); margin-bottom: 10px;"></i>
+            <h3>¡Gracias por confirmar!</h3>
+            <p id="confirmDetails" style="margin-bottom: 15px; color: #555;"></p>
+            <a id="whatsappLink" href="#" target="_blank" class="btn-map" style="background-color: #25D366; border: none; color: white;">
+                <i class="fab fa-whatsapp"></i> Enviar respuesta por WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>Selene & Irving — 19.12.2026</p>
+        <p style="margin-top: 5px; font-size: 0.75rem; color: var(--gold);">¡Los esperamos con mucha ilusión!</p>
+    </footer>
+
+    <script>
+        // Reproductor de Música
+        const music = document.getElementById('bgMusic');
+        const musicPlayer = document.getElementById('musicPlayer');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicPlayer.classList.remove('active');
+            } else {
+                music.play();
+                musicPlayer.classList.add('active');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Cuenta Regresiva (19 Diciembre 2026 18:00:00)
+        const targetDate = new Date('December 19, 2026 18:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+                document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+                document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+                document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+            }
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Formulario RSVP
+        function submitForm(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('guestName').value;
+            const attendance = document.getElementById('attendance').value;
+            const passes = document.getElementById('passes').value;
+            const message = document.getElementById('message').value;
+
+            // Ocultar Formulario y Mostrar Confirmación
+            document.getElementById('rsvpForm').style.display = 'none';
+            const confirmationCard = document.getElementById('confirmationCard');
+            confirmationCard.style.display = 'block';
+
+            document.getElementById('confirmDetails').innerText = 
+                `Hola ${name}, hemos registrado tu respuesta: "${attendance}" (${passes}).`;
+
+            // Crear enlace de WhatsApp
+            const text = `¡Hola Selene e Irving! Confirmo mi asistencia a su boda.%0A%0A*Nombre:* ${encodeURIComponent(name)}%0A*Respuesta:* ${encodeURIComponent(attendance)}%0A*Pases:* ${encodeURIComponent(passes)}%0A*Mensaje:* ${encodeURIComponent(message)}`;
+            
+            document.getElementById('whatsappLink').href = `https://api.whatsapp.com/send?text=${text}`;
+        }
+    </script>
+</body>
+</html>
